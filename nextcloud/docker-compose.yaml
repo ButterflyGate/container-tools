@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:14.4
+    restart: always
+    networks:
+      - nextcloud_network
+      - postgres_network
+    ports:
+      - "30081:5432"
+    env_file:
+      - ./envs/db_auth.env
+    environment:
+      - POSTGRES_DB=nextcloud
+    volumes:
+      # DBデータ永続用
+      - type: volume
+        source: nextcloud_postgres
+        target: /var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    restart: always
+    
+  app:
+    image: nextcloud:latest
+    depends_on:
+      - db
+      - redis
+    restart: always
+    networks:
+      - nextcloud_network
+    ports:
+      - "30080:80"
+    env_file:
+      - ./envs/db_auth.env
+      - ./envs/nextcloud.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=nextcloud
+      - REDIS_HOST=redis
+    volumes:
+      - type: bind
+        source: ./volumes/nextcloud 
+        target: /var/www/html
+            # container に login した時用の bash alias など。
+      - type: bind
+        source: /mnt/lvm-public
+        target: /var/www/html/data
+        
+volumes:
+  nextcloud_postgres:
+networks:
+  nextcloud_network:
+  postgres_network:
