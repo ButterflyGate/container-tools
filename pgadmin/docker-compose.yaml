@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  app:
+    image: dpage/pgadmin4:6.12
+    restart: always
+    networks:
+      - postgres_network
+    environment:
+      - PGADMIN_LISTEN_PORT=5678
+    env_file:
+      - ./env_files/pgadmin_auth.env
+    ports:
+      - "30502:5678"
+
+networks:
+  postgres_network:
