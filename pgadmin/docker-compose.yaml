@@ -9,7 +9,7 @@ services:
     environment:
       - PGADMIN_LISTEN_PORT=5678
     env_file:
-      - ./env_files/pgadmin_auth.env
+      - ./envs/pgadmin_auth.env
     ports:
       - "30502:5678"
 
