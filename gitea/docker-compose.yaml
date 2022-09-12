@@ -1,0 +1,19 @@
+version: '3'
+services:
+  app:
+    image: gitea/gitea:1.17.2
+    restart: always
+    env_file:
+      - ./envs/gitea.env
+    ports:
+      - target: 3000
+        published: 33043
+        protocol: tcp
+        mode: host
+      - target: 22
+        published: 34225
+        protocol: tcp
+        mode: host
+    volumes:
+      - ./volumes/gitea:/var/lib/rabbitmq/mnesia:rw
+    
