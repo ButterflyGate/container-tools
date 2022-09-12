@@ -1,0 +1,19 @@
+version: '3'
+services:
+  app:
+    image: rabbitmq:management
+    restart: always
+    env_file:
+      - ./envs/rmq.env
+    ports:
+      - target: 5672
+        published: 32094
+        protocol: tcp
+        mode: host
+      - target: 15672
+        published: 32095
+        protocol: tcp
+        mode: host
+    volumes:
+      - ./volumes/rabbitmq:/var/lib/rabbitmq/mnesia:rw
+
