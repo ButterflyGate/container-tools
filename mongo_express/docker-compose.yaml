@@ -1,35 +1,36 @@
 version: '3'
 
 services:
-  app:
-    container_name: mongo_express
-    image: mongo-express:1.0.0-alpha.4
-    depends_on:
-      - redis
+  db:
+  # container_name: 
+    image: mongo:6.0
     restart: always
     networks:
       - mongo_network
     ports:
-      - "8081:48081"
+      - "37017:27017"
     environment:
       - REDIS_HOST=redis
     env_file:
-      - ./env_files/mongo-express.env
+      - ./envs/mongodb_auth.env
     # volumes:
     #   - type: bind
-    #     source: ./volumes/mongo_express 
+    #     source: ./volumes/nextcloud 
     #     target: /var/www/html
-
-
-# volumes:
-#   mongo:
+  app:
+    container_name: mongo_express
+    image: mongo-express:0.54
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - mongo_network
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_HOST=redis
+    env_file:
+      - ./envs/mongo-express.env
 
 networks:
-  mongo:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 192.168.9.0/24
-
-      
+  mongo_network:
