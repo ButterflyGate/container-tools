@@ -2,8 +2,7 @@ version: '3'
 
 services:
   redis:
-    # いらない気がする 
-    # container_name: text
+    container_name: text
     image: redis:alpine
     restart: always
   app:
@@ -22,12 +21,12 @@ services:
       - ./env_files/XXXXXX_auth.env
     volumes:
       - type: bind
-        source: ./volumes/nextcloud 
+        source: ./volumes/nextcloud
         target: /var/www/html
-
 
 volumes:
   nextcloud_postgres:
+
 
 networks:
   front:
@@ -36,5 +35,3 @@ networks:
       driver: default
       config:
         - subnet: 192.168.10.0/24
-
-      
