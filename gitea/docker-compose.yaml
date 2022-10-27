@@ -1,19 +1,53 @@
 version: '3'
 services:
+  db:
+    image: postgres:latest
+    container_name: gitea_postgres
+    restart: always
+    networks:
+      - gitea_network
+    ports:
+      - "30512:5432"
+      - "50122:22"
+    env_file:
+      - ./envs/db_auth.env
+    volumes:
+      # DBデータ永続用
+      - type: volume
+        source: postgres_data
+        target: /var/lib/postgresql/data
+
+      # 初回起動時実行用スクリプトの保存場所
+      - type: bind
+        source: ./volumes/postgres_init
+        target: /docker-entrypoint-initdb.d
   app:
     image: gitea/gitea:1.17.2
+    container_name: gitea_app
+    depends_on: db
     restart: always
     env_file:
+      - ./envs/db_auth.env
       - ./envs/gitea.env
     ports:
       - target: 3000
-        published: 33043
+        published: 33617
         protocol: tcp
         mode: host
       - target: 22
-        published: 34225
+        published: 38728
         protocol: tcp
         mode: host
     volumes:
-      - ./volumes/gitea:/var/lib/rabbitmq/mnesia:rw
-    
+      # 初回起動時実行用スクリプトの保存場所
+      - type: bind
+        source: ./volumes/gitea_data
+        target: /data/gitea
+
+networks:
+  gitea_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.29.0/24
