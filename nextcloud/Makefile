@@ -9,3 +9,8 @@ restart: ## nextcloud 再起動
 	docker-compose down
 	./shells/startup.sh
 
+all-reset: ## データ全削除
+	sudo rm -rf /mnt/lvm-public/* /mnt/lvm-public/.*
+	sudo rm -rf ./volumes/nextcloud/* ./volumes/nextcloud/.*
+	sudo rm -rf ./volumes/postgres/* ./volumes/postgres/.*
+
