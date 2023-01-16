@@ -5,17 +5,19 @@ help:
 init: ## volume directory を追加
 	mkdir -p ./volumes/database
 
-
 perform-a-factory-reset-%: ## 全削除 
 	@CORRECT_PASSWORD=temp
 	@$(eval RESET_PASSWORD := ${@:perform-a-factory-reset-%})
 
 startup: ## nextcloud 立ち上げ
-	./shells/startup.sh
+	./shells/startup.sh startup
+
+down: ## nextcloud 終了
+	./shells/startup.sh down
 
 restart: ## nextcloud 再起動
 	docker-compose down
-	./shells/startup.sh
+	./shells/startup.sh startup
 
 all-reset: ## データ全削除
 	sudo rm -rf /mnt/lvm-public/* /mnt/lvm-public/.*

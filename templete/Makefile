@@ -9,12 +9,12 @@ perform-a-factory-reset-%: ## 全削除
 	@CORRECT_PASSWORD=temp
 	@$(eval RESET_PASSWORD := ${@:perform-a-factory-reset-%}) 
 
-startup: ## nextcloud 立ち上げ
-	./shells/startup.sh
- 
-restart: ## nextcloud 再起動
-	docker-compose down
+startup: ## SERVICE 立ち上げ
 	./shells/startup.sh
 
-down: ## nextcloud 停止
+down: ## SERVICE 終了
 	docker-compose down
+
+restart: ## SERVICE 再起動
+	docker-compose down
+	./shells/startup.sh

@@ -8,21 +8,36 @@ mountedpoint=$(findmnt --output=TARGET -n -S /dev/shinra-bansho/public)
 # sudo mount /dev/shinra-bansho/private /mnt/lvm-private
 # sudo mount /dev/shinra-bansho/public /mnt/lvm-public
 
-function startup() {
-
-
-
+function startup () {
     docker-compose up -d
 }
 
-if [[ -n $mountedpoint ]]; then
-    if [[ $mountedpoint != $mountpoint ]]; then
-        sudo umount $mountedpoint
+function down () {
+    docker-compose down
+}
+
+function mount_volume () {
+    if [[ -n $mountedpoint ]]; then
+        if [[ $mountedpoint != $mountpoint ]]; then
+            sudo umount $mountedpoint
+        fi
     fi
+
+    if [[ $mountedpoint != $mountpoint ]]; then
+        sudo mount $mountdev $mountpoint
+    fi
+}
+
+
+option=$1
+if [[ $option = "startup" ]]; then
+    mount_volume
+    startup
+    return
+elif [[ $option = "down" ]]; then
+    down
+    return
 fi
 
-if [[ $mountedpoint != $mountpoint ]]; then
-    sudo mount $mountdev $mountpoint
-fi
-
-startup()
+echo "specifi startup or down"
+return -1
