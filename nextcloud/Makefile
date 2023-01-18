@@ -2,26 +2,25 @@
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-init: ## volume directory を追加
-	mkdir -p ./volumes/database
-
-perform-a-factory-reset-%: ## 全削除 
-	@CORRECT_PASSWORD=temp
-	@$(eval RESET_PASSWORD := ${@:perform-a-factory-reset-%})
+init: ## 初期設定を行う。初起動時以外に使用しない。volume directory, env file を追加する。
+	./shells/init.sh
 
 startup: ## nextcloud 立ち上げ
-	./shells/startup.sh startup
+	./shells/container-control.sh startup
 
 down: ## nextcloud 終了
-	./shells/startup.sh down
+	./shells/container-control.sh down
 
 restart: ## nextcloud 再起動
 	docker-compose down
-	./shells/startup.sh startup
+	./shells/container-control.sh restart
 
 all-reset: ## データ全削除
 	sudo rm -rf /mnt/lvm-public/* /mnt/lvm-public/.*
 	sudo rm -rf ./volumes/nextcloud/* ./volumes/nextcloud/.*
 	sudo rm -rf ./volumes/postgres/* ./volumes/postgres/.*
 
+perform-a-factory-reset-%: ## 全削除 
+	@CORRECT_PASSWORD=temp
+	@$(eval RESET_PASSWORD := ${@:perform-a-factory-reset-%})
 
