@@ -1,15 +1,17 @@
-# CONTAINER-TOOLS
+# CONTAINER TOOLS
+- A functions
 
+## Usage
 
 ## PORTs
 
 | service       | app container port | db container port | description         |
 | ------------: | :----------------: | :---------------: | :------------------ |
-| gitea         | 33617              | ---               | db port is closed   |
-| NextClaud     | 31683              | ---               | db port is closed   |
+| gitea         | 33617              | 30252             | db is isolated      |
+| NextClaud     | 31683              | 33093             | db is isolated      |
 | PGAdmin       | 36575              | 33648             |                     |
-| rabbitmq      | ooooo              | ---               | db port is closed   |
-| nginx         | ooooo              | ---               | db port is closed   |
-| mongo express | ooooo              | xxxxx             |                     |
+| rabbitmq      | 38599              | 36558             | db is isolated      |
+| nginx         | 38815              | 31849             | db is isolated      |
+| mongo express | 39875              | 34284             |                     |
 
 
