@@ -6,8 +6,6 @@ services:
     container_name: postgres
     # depends_on:
     restart: always
-    networks:
-      - postgres_network
     ports:
       - "30512:5432"
       - "50122:22"
@@ -19,18 +17,15 @@ services:
       - type: volume
         source: postgres_data
         target: /var/lib/postgresql/data
-
       # 初回起動時実行用スクリプトの保存場所
       - type: bind
         source: ./volumes/postgres_init
         target: /docker-entrypoint-initdb.d
+
   pgadmin:
     image: dpage/pgadmin4:6.12
+    container_name: pgadmin
     restart: always
-    depends_on:
-      - postgres
-    networks:
-      - postgres_network
     environment:
       - PGADMIN_LISTEN_PORT=5678
     env_file:
@@ -45,7 +40,8 @@ services:
 
 volumes:
   postgres_data:
-
+    name: pgadmin_postgres_volume
 
 networks:
-  postgres_network:
+  default:
+    name: pgadmin_network

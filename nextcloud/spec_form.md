@@ -22,3 +22,6 @@
 
 ### docker-compose file
 
+### epub reader
+- https://www.reddit.com/r/NextCloud/comments/wpaoa9/epub_reader/
+- nextcloud/volumes/nextcloud/custom_apps/epubreader/lib/Migration/Version010404Date20201030180941.php

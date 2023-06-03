@@ -16,9 +16,10 @@ restart: ## nextcloud 再起動
 	./shells/container-control.sh restart
 
 all-reset: ## データ全削除
-	sudo rm -rf /mnt/lvm-public/* /mnt/lvm-public/.*
-	sudo rm -rf ./volumes/nextcloud/* ./volumes/nextcloud/.*
-	sudo rm -rf ./volumes/postgres/* ./volumes/postgres/.*
+	# sudo rm -rf /mnt/lvm-public/nextcloud/data
+	# sudo rm -rf ./volumes/nextcloud
+	sudo rm -rf ./volumes/postgres
+	mkdir ./volumes/postgres
 
 perform-a-factory-reset-%: ## 全削除 
 	@CORRECT_PASSWORD=temp

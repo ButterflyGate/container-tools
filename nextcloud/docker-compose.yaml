@@ -1,12 +1,13 @@
-version: '3'
+version: '3.9'
 
 services:
   db:
-    image: postgres:14.4
+    image: postgres:15.3
+    container_name: nextcloud_db
     restart: always
-    # networks:
-    #   - nextcloud_network
-    #   - postgres_network
+    networks:
+      - default
+      - pgadmin
     ports:
       - "30081:5432"
     env_file:
@@ -21,16 +22,19 @@ services:
 
   redis:
     image: redis:alpine
+    container_name: nextcloud_cache
     restart: always
 
   app:
-    image: nextcloud:25.0.1
+    image: nextcloud:25.0.7-apache
+    container_name: nextcloud_app
     depends_on:
       - db
       - redis
     restart: always
-    # networks:
-    #   - nextcloud_network
+    # user: "www-data:www-data"
+    networks:
+      - default
     ports:
       - "31683:80"
     env_file:
@@ -40,20 +44,32 @@ services:
       - POSTGRES_HOST=db
       - REDIS_HOST=redis
     volumes:
+      # - type: bind
+      #   source: ./volumes/nextcloud
+      #   target: /var/www/html
+      # - type: bind
+      #   source: /mnt/lvm-public/nextcloud/var
+      #   target: /var
+      #   volume:
+      #     nocopy: false
       - type: bind
-        source: ./volumes/nextcloud
-        target: /var/www/html
-      # container に login した時用の bash alias など。
-      - type: bind
-        source: /mnt/lvm-public
-        target: /data
+        source: /mnt/lvm-public/nextcloud/data
+        target: /var/www/data
         volume:
           nocopy: false
+      # - type: bind
+      #   source: /mnt/lvm-public/nextcloud/php
+      #   target: /usr/local/etc/php
+      #   volume:
+      #     nocopy: false
 
 volumes:
-  nextcloud_postgres:
-
+  postgres_volume:
+    name: nextcloud_postgres_volume
 
 networks:
-  nextcloud_network:
-  postgres_network:
+  default:
+    name: nextcloud_network
+  pgadmin:
+    name: pgadmin_network
+    external: true
