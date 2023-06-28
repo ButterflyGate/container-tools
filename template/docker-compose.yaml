@@ -2,32 +2,36 @@ version: '3'
 
 services:
   cache:
-    container_name: temp_cache
+    container_name: XXX_cache
     image: redis:alpine
+    networks:
+      - default
     restart: always
   app:
-    image: XXXXXX:latest
-    container_name: temp_app 
+    image: XXX:latest
+    container_name: XXX_app 
     depends_on:
       - redis
     restart: always
     networks:
-      - nextcloud_network
+      - default
     ports:
       - "30080:80"
     environment:
       - REDIS_HOST=redis
     env_file:
-      - ./env_files/XXXXXX_auth.env
+      - ./env_files/XXX_auth.env
     volumes:
       - type: bind
-        source: ./volumes/nextcloud
+        source: ./volumes/xxx
         target: /var/www/html
 
 volumes:
-  nextcloud_postgres:
+  XXX:
 
 networks:
+  default:
+    name: XXX_network
   front:
     driver: bridge
     ipam:

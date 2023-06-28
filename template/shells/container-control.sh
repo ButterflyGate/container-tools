@@ -17,7 +17,7 @@ function restart () {
 }
 
 option=$1
-if [[ $option = "startup" ]]; then
+if [[ $option = "start" ]]; then
     startup
     return 0
 elif [[ $option = "down" ]]; then
@@ -25,9 +25,9 @@ elif [[ $option = "down" ]]; then
     return 0
 elif [[ $option = "restart" ]]; then
     down
-    startup
+    start
     return 0
 fi
 
-echo "specify startup or down"
+echo "specify start or down"
 return -1

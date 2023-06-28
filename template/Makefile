@@ -5,7 +5,7 @@ help:
 init: ## 初期設定を行う。初起動時以外に使用しない。volume directory, env file を追加する。
 	./shells/init.sh
 
-startup: ## template 立ち上げ
+start: ## template 立ち上げ
 	./shells/container-control.sh start
 
 down: ## template 終了
