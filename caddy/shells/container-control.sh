@@ -4,16 +4,20 @@ THIS_DIR=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 source $THIS_DIR/settings.sh
 
 function startup () {
-    docker-compose up -d
+    docker compose up -d
 }
 
 function down () {
-    docker-compose down
+    docker compose down
+}
+
+function restart () {
+    down
+    startup
 }
 
 option=$1
 if [[ $option = "start" ]]; then
-    source ${THIS_DIR}/mount.sh
     startup
     return 0
 elif [[ $option = "down" ]]; then

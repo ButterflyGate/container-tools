@@ -45,6 +45,8 @@ services:
         target: /data/gitea
 
 networks:
+  default:
+    name: gitea_network_default
   gitea_network:
     driver: bridge
     ipam:

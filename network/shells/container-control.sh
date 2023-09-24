@@ -11,9 +11,13 @@ function down () {
     docker-compose down
 }
 
+function restart () {
+    down
+    startup
+}
+
 option=$1
 if [[ $option = "start" ]]; then
-    source ${THIS_DIR}/mount.sh
     startup
     return 0
 elif [[ $option = "down" ]]; then
@@ -21,7 +25,7 @@ elif [[ $option = "down" ]]; then
     return 0
 elif [[ $option = "restart" ]]; then
     down
-    startup
+    start
     return 0
 fi
 

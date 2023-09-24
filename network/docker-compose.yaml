@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  dummy:
+    image: busybox
+    container_name: dummy_for_network
+    hostname: dummy
+    networks:
+      - default
+      - nextcloud
+      - pgadmin
+
+networks:
+  default:
+    name: network_network
+  nextcloud:
+    name: nextcloud_network_external
+  pgadmin:
+    name: pgadmin_network_external

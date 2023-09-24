@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  app:
+    image: codeberg.org/forgejo/forgejo:1.20.1-0
+    container_name: forgejo_app 
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - default
+    ports:
+      - "33618:3000"
+      - "33622:22"
+    env_file:
+      - ./envs/forgejo.env
+    volumes:
+      - type: bind
+        source: /mnt/lvm-public/forgejo
+        target: /data
+  db:
+    image: postgres:15.3
+    container_name: forgejo_db
+    restart: always
+    networks:
+      - default
+      - pgadmin
+    ports:
+      - "30253:5432"
+    env_file:
+      - ./envs/db_auth.env
+    volumes:
+      # DBデータ永続用
+      - type: bind
+        source: ./volumes/postgres
+        target: /var/lib/postgresql/data
+
+networks:
+  default:
+    name: forgejo_default_network
+  pgadmin:
+    name: pgadmin_network_external
+    external: true

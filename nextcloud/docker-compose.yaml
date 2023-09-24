@@ -24,6 +24,8 @@ services:
     image: redis:alpine
     container_name: nextcloud_cache
     restart: always
+    networks:
+      - default
 
   app:
     image: nextcloud:25.0.7-apache
@@ -35,6 +37,7 @@ services:
     # user: "www-data:www-data"
     networks:
       - default
+      - nextcloud
     ports:
       - "31683:80"
     env_file:
@@ -53,23 +56,32 @@ services:
       #   volume:
       #     nocopy: false
       - type: bind
-        source: /mnt/lvm-public/nextcloud/data
+        source: ./volumes/nextcloud/nextcloud/data
         target: /var/www/data
-        volume:
-          nocopy: false
       # - type: bind
       #   source: /mnt/lvm-public/nextcloud/php
       #   target: /usr/local/etc/php
       #   volume:
       #     nocopy: false
 
-volumes:
-  postgres_volume:
-    name: nextcloud_postgres_volume
+# volumes:
+#   app_data:
+#     name: nextcloud_app_data_volume
+#     driver: local
+#     driver_opts:
+#       type: none
+#       device: /mnt/lvm-public/nextcloud/data
+#       o: bind
+#   postgres_volume:
+#     name: nextcloud_postgres_volume
+
 
 networks:
   default:
-    name: nextcloud_network
+    name: nextcloud_network_default
+  nextcloud:
+    name: nextcloud_network_external
+    external: true
   pgadmin:
-    name: pgadmin_network
+    name: pgadmin_network_external
     external: true

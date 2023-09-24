@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  app:
+    image: caddy:latest
+    container_name: caddy_app 
+    restart: always
+    networks:
+      - default
+    ports:
+      - "80:80"
+      - "443:443/tcp"
+      - "443:443/udp"
+      - "2019:2019"
+    # environment:
+    #   - REDIS_HOST=redis
+    env_file:
+      - ./envs/caddy.env
+    volumes:
+      - type: bind
+        source: ./volumes/caddy/config
+        target: /config
+      - type: bind
+        source: ./volumes/caddy/data
+        target: /data
+      - type: bind
+        source: ./volumes/caddy/site
+        target: /srv
+      - ./volumes/caddy/index.html:/usr/share/caddy/index.html
+      - ./volumes/caddy/Caddyfile:/usr/caddy/Caddyfile:ro
+
+networks:
+  default:
+    name: caddy_network
+  # front:
+  #   driver: bridge
+  #   ipam:
+  #     driver: default
+  #     config:
+  #       - subnet: 192.168.10.0/24

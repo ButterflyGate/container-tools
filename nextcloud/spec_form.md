@@ -16,11 +16,20 @@
 ### docker image
 - すべて公式に配布されるimageを使用する。
 - 必要image
-    - nextcloud:latest
-    - postgres:14.4
+    - nextcloud:25.0.7-apache
+    - postgres:15.3
     - redis:alpine
 
 ### docker-compose file
+
+### rescan
+
+- データ保管場所のファイルやディレクトリを直接設置、または削除、変更を加えた場合、DB上のデータを更新する必要がある。
+    ```
+    ./occ files:scan --all
+    ```
+    - ただしoccの場所はバージョンにより異なる。
+    - 実行するユーザは `www-data` とする。ただしバージョンにより `abc` の場合がある。 
 
 ### epub reader
 - https://www.reddit.com/r/NextCloud/comments/wpaoa9/epub_reader/

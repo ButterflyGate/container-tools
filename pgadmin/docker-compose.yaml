@@ -26,6 +26,9 @@ services:
     image: dpage/pgadmin4:6.12
     container_name: pgadmin
     restart: always
+    networks:
+      - default
+      - pgadmin
     environment:
       - PGADMIN_LISTEN_PORT=5678
     env_file:
@@ -44,4 +47,9 @@ volumes:
 
 networks:
   default:
-    name: pgadmin_network
+    name: pgadmin_default_network
+  pgadmin:
+    name: pgadmin_network_external
+    external: true
+
+
